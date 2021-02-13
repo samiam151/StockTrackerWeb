@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 $primary: #dc3545;
 
-//@import "../node_modules/bootstrap/scss/bootstrap-reboot.scss";
+@import "../node_modules/bootstrap/scss/bootstrap-reboot.scss";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 @import "../node_modules/bootstrap/scss/bootstrap-grid.scss";
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
 

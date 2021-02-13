@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {map, tap} from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface IUser {
   email: string;
@@ -18,15 +19,18 @@ export interface LoginResult {
 }
 
 export class User implements IUser {
-  constructor(id: number, email: string) {
+  constructor(id: number, email: string, watchlist: any[] = []) {
     this.id = id;
     this.email = email;
+    this.watchlist = watchlist;
   }
   email: string;
   id: number;
+  watchlist: any[]
 }
 
-const ACCESS_TOKEN_NAME: string = "access_token";
+const ACCESS_TOKEN_NAME: string = "access_token_stocktracker";
+const STORAGE_TYPE: Storage = localStorage;
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +42,11 @@ export class UserService {
 
   get currentUser() {
     return this._currentUser;
+  }
+
+  getUserInfo(id: number)
+  {
+    return this.http.get<any>(environment.apiUrl + "/users/" + id);
   }
 
   set currentUser(user: User)
@@ -63,7 +72,7 @@ export class UserService {
 
   get token()
   {
-    return sessionStorage.getItem(ACCESS_TOKEN_NAME)
+    return STORAGE_TYPE.getItem(ACCESS_TOKEN_NAME)
   }
 
   authenticateUser(email: string, password: string)
@@ -84,10 +93,10 @@ export class UserService {
   }
 
   private setToken(token: string) {
-    sessionStorage.setItem(ACCESS_TOKEN_NAME, token);
+    STORAGE_TYPE.setItem(ACCESS_TOKEN_NAME, token);
   }
 
   private removeToken() {
-    sessionStorage.removeItem(ACCESS_TOKEN_NAME);
+    STORAGE_TYPE.removeItem(ACCESS_TOKEN_NAME);
   }
 }

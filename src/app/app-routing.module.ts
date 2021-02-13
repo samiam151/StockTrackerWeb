@@ -3,11 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './shared/components';
 
 import { HomeRoutingModule } from './home/home-routing.module';
-import { DetailRoutingModule } from './detail/detail-routing.module';
 
 import { LoginComponent } from './login/login/login.component';
 import { SignupComponent } from './login/signup/signup.component';
 import { HomeComponent } from './home/home.component';
+import { StockDetailComponent } from './stock/pages/stock-detail/stock-detail.component';
 
 const routes: Routes = [
   {
@@ -20,6 +20,20 @@ const routes: Routes = [
       {
         path: "sign-up",
         component: SignupComponent
+      }
+    ]
+  },
+  {
+    path: "stock",
+    children: [
+      {
+        path: "",
+        component: HomeComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: ":symbol",
+        component: StockDetailComponent
       }
     ]
   },
@@ -39,7 +53,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     HomeRoutingModule,
-    DetailRoutingModule
   ],
   exports: [RouterModule]
 })

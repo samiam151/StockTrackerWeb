@@ -22,8 +22,6 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.http.get(environment.apiUrl + "/stocksymbol/search?term=GME")
-      .subscribe(data => console.log(data), err => console.log(err))
   }
 
   showNotification(message = "No Message") {

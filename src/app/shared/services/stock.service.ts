@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface IChartResponse {
   chart: {
@@ -24,9 +26,26 @@ export class StockService {
   ) {
   }
 
+  private withURL = (url: string): string => `${this.baseURL}${url}`;
+
+  getAllSymbols() {
+    return this.http.get<any[]>(environment.apiUrl + "/stocksymbol");
+  }
+
   getStockPrice(ticker: string)
   {
-    return this.http.get<IChartResponse>(`${this.baseURL}/get-chart?interval=15m&symbol=${ticker}&range=1d&region=US`, {
+    return this.http.get<IChartResponse>(this.withURL(`/get-chart?interval=15m&symbol=${ticker}&range=1d&region=US`), {
+      "headers": this.apiHeaders
+    });
+  }
+
+  searchSymbols(term: string) {
+    return this.http.get<any[]>(environment.apiUrl + "/stocksymbol/search?term=" + term);
+  }
+
+  getStockDetail(symbol: string)
+  {
+    return this.http.get<IChartResponse>(this.withURL(`/get-summary?symbol=${symbol}&region=US`), {
       "headers": this.apiHeaders
     });
   }

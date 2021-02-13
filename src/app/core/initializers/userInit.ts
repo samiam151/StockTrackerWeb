@@ -10,19 +10,17 @@ export interface Token {
   user_id: string;
 }
 
-export function UserInitializer(us: UserService)
-{
+export function UserInitializer(us: UserService) {
   return () => {
     return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        if (us.token)
-        {
-          let user: Token = jwt_decode(us.token);
-          us.currentUser = new User(Number(user.user_id), user.name);
-          console.log("Current User: ", us.currentUser);
-        }
+      if (!us.token) resolve();
+
+      let user: Token = jwt_decode(us.token);
+      us.getUserInfo(Number(user.user_id)).subscribe(data => {
+        us.currentUser = new User(data.id, data.email, data.watchlist);
+        console.log("Current User: ", us.currentUser);
         resolve();
-      }, 3000);
+      })
     });
   };
 }

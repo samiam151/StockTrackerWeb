@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { UserService } from '../../shared/services/user.service';
 
 
 @Injectable()
@@ -16,7 +15,6 @@ export class JwtInterceptor implements HttpInterceptor {
     const accessToken = sessionStorage.getItem('access_token');
     const isApiUrl = req.url.startsWith(environment.apiUrl);
     if (accessToken && isApiUrl) {
-      console.log("intercepted...");
       req = req.clone({
         setHeaders: { Authorization: `Bearer ${accessToken}` },
       });
