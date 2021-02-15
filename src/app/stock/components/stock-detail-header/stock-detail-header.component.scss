@@ -1,0 +1,11 @@
+.stock-detail-header_price {
+  font-weight: 700;
+  font-size: 42px;
+
+  &.price-up {
+    color: green;
+  }
+  &.price-down {
+    color: red;
+  }
+}

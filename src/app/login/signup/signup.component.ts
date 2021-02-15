@@ -39,14 +39,22 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    this.us.createUser(this.signUpFormModel.username, this.signUpFormModel.password)
-      .subscribe(data => {
-        console.log(data);
-        this.router.navigate(['/login']);
-      },
-      err => {
-        this.errorMessage = err;
-      });
+    this.us.userExists(this.signUpFormModel.username).subscribe(data => {
+      if (data.length > 0) {
+        this.errorMessage = "User already exists."
+        return;
+      }
+
+      this.us.createUser(this.signUpFormModel.username, this.signUpFormModel.password)
+        .subscribe(data => {
+          console.log(data);
+          this.router.navigate(['/login']);
+        },
+        err => {
+          this.errorMessage = err;
+        });
+    })
+
   }
 
 }

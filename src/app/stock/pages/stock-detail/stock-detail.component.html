@@ -1,4 +1,7 @@
-<div *ngIf="detail">
-  <h2>{{ symbol }}</h2>
-  <span>{{ detail?.quoteType?.shortName }}</span>
+<div class="card">
+  <div *ngIf="detail" class="card-body">
+    <app-stock-detail-header
+      [data]="detail"
+    ></app-stock-detail-header>
+  </div>
 </div>

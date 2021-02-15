@@ -25,7 +25,7 @@ export class CandleChartComponent implements OnInit {
 		private height = 400 - (this.margin * 2);
 
 		ngOnInit(): void {
-				this.stock.getStockPrice(this.symbol).subscribe(data => {
+				this.stock.getChartData(this.symbol).subscribe(data => {
 						let res = data?.chart?.result[0];
 						console.log(res);
 

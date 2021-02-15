@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {map, tap} from 'rxjs/operators';
+import {map, reduce, tap} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export interface IUser {
@@ -83,6 +83,10 @@ export class UserService {
         this.setToken(result.accessToken);
       })
     );
+  }
+
+  public userExists(name: string) {
+    return this.http.get<User[]>(environment.apiUrl + "/users/search?email=" + name);
   }
 
   private requestAuth(email: string, password: string) {

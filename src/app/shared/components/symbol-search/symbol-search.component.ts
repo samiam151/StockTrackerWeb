@@ -37,6 +37,8 @@ export class SymbolSearchComponent implements OnInit {
   selectSymbol({symbol, name, id})
   {
     console.log("Selected: ", symbol, name, id);
-    this.router.navigate(["/stock", symbol]);
+    this.router.navigate(["/stock", symbol]).then(() => {
+      this.chosenSymbol = null;
+    });
   }
 }
