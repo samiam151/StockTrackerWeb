@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { StockService } from '../../services/stock.service';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { StockService } from '../../services/stock-service/stock.service';
 
 @Component({
   selector: 'app-symbol-search',
@@ -11,27 +11,26 @@ import { StockService } from '../../services/stock.service';
 })
 export class SymbolSearchComponent implements OnInit {
 
-  public symbols: any[] = [];
   public chosenSymbol: any;
   public selectLoading = false;
+
+  public searchSub$ = new Subject<any>();
+  public symbols$: Observable<any[]>;
 
   constructor(private stock: StockService, private router: Router) { }
 
   ngOnInit(): void {
-    this.stock.getAllSymbols().subscribe(data => {
-      this.symbols = data.slice(0, 50);
-      console.log("Symbols: ", this.symbols)
-    })
+    this.symbols$ = this.searchSub$.pipe(
+      tap(d => this.selectLoading = true),
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(term => this.stock.searchSymbols(term)),
+      tap(d => this.selectLoading = false)
+    );
   }
 
   searchSymbol({term, items}) {
-    this.selectLoading = true
-    term = term.toUpperCase();
-    this.stock.searchSymbols(term)
-      .subscribe(data => {
-        this.symbols = data;
-        this.selectLoading = false;
-      });
+    if (term.length > 1) this.searchSub$.next(term.toUpperCase());
   }
 
   selectSymbol({symbol, name, id})

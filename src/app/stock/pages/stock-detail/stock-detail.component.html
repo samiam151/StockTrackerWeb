@@ -1,7 +1,36 @@
-<div class="card">
-  <div *ngIf="detail" class="card-body">
-    <app-stock-detail-header
-      [data]="detail"
-    ></app-stock-detail-header>
+<div class="row" style="padding: 0 15px;" >
+  <!-- When no data is available -->
+  <div class="card col-md-8" *ngIf="noDataAvailable">
+    <div class="card-body">
+      No data is available for this symbol. Please try another symbol.
+    </div>
+  </div>
+
+  <!-- When data is available -->
+  <div class="card col-md-8" *ngIf="!noDataAvailable">
+    <div *ngIf="detail" class="card-body">
+      <app-stock-detail-header
+        [data]="detail"
+        [symbol]="symbol"
+      ></app-stock-detail-header>
+
+      <hr />
+
+      <app-candle-chart
+        [symbol]="symbol"
+        interval="10000"
+      ></app-candle-chart>
+    </div>
+  </div>
+
+  <div class="card col-md-3 offset-md-1">
+    <div class="card-body">
+      <app-recently-viewed
+        [symbol]="symbol"
+      ></app-recently-viewed>
+    </div>
   </div>
 </div>
+
+
+

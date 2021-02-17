@@ -1,4 +1,35 @@
-<h4 class="card-title">{{ data.quoteType?.shortName }} ({{ data.symbol }})</h4>
-<small><b>Industry:</b> {{ data.summaryProfile.industry }}</small>
 
-<p [class]="priceStyle">{{ regularMarketPrice }}</p>
+<div class="row justify-align-center" *ngIf="latestData">
+  <div class="col-md-6">
+    <h4 class="card-title">{{ data.quoteType?.shortName }} ({{ data.symbol }})</h4>
+    <p><b>Industry:</b> {{ data.summaryProfile.industry }}</p>
+    <p><b>Website: </b><a target="_blank" [href]="data.summaryProfile.website">{{ data.summaryProfile.website }}</a></p>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-6">
+        <div>
+          <p><b>Current Price: </b></p>
+          <span [class]="priceStyle">{{ currentPrice }} </span>
+        </div>
+        <div>
+          <p><b>Previous Day Close: </b></p>
+          <span [class]="priceStyle">{{ previousClose }} </span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <p><b>Current Volume: </b></p>
+          <span [class]="priceStyle">{{ latestData.volume | number:'1.0':'en-US' }} </span>
+        </div>
+        <div>
+          <p><b>Previous Day Volume: </b></p>
+          <span [class]="priceStyle">{{ latestData.previousVolume |  number:'1.0':'en-US' }} </span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="col-md-2"></div>
+</div>

@@ -1,7 +1,8 @@
+import { viewClassName } from '@angular/compiler';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ServerSentEventService } from '../../../shared/services/server-sent-event.service';
-import { StockService } from '../../../shared/services/stock.service';
+import { StockService } from '../../../shared/services/stock-service/stock.service';
 
 @Component({
   selector: 'app-stock-detail',
@@ -11,11 +12,11 @@ import { StockService } from '../../../shared/services/stock.service';
 export class StockDetailComponent implements OnInit, OnDestroy {
   public symbol: string;
   public detail: any = null;
+  public noDataAvailable: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private stock: StockService,
-    private sse: ServerSentEventService
+    private stock: StockService
   ) { }
 
   ngOnDestroy(): void {
@@ -30,11 +31,9 @@ export class StockDetailComponent implements OnInit, OnDestroy {
       this.stock.getStockDetail(this.symbol).subscribe(data => {
         this.detail = data;
         console.log(data);
+        if (data === null) this.noDataAvailable = true;
       })
-
-      this.stock.getSSEPrices(this.symbol).subscribe(data => console.log(data));
     })
-
   }
 
 }

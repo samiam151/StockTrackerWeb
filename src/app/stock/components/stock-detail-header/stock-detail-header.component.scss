@@ -1,6 +1,7 @@
 .stock-detail-header_price {
   font-weight: 700;
-  font-size: 42px;
+  font-size: 22px;
+  line-height: 22px;
 
   &.price-up {
     color: green;
@@ -8,4 +9,8 @@
   &.price-down {
     color: red;
   }
+}
+
+p {
+  margin-bottom: 0;
 }

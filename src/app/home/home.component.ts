@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { StockService } from "../shared/services/stock.service";
+import { StockService } from "../shared/services/stock-service/stock.service";
 import { environment } from "../../environments/environment";
 
 @Component({

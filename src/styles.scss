@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-$primary: #dc3545;
+// $primary: #dc3545;
+$primary: #363636;
+$green: rgb(30, 107, 15);
 
 @import "../node_modules/bootstrap/scss/bootstrap-reboot.scss";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
@@ -21,6 +23,11 @@ html, body {
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: 700;
+}
+
+.container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl {
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 @media (min-width: 1200px) {
