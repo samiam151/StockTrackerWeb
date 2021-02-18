@@ -1,6 +1,21 @@
 <div class="justify-content-center">
   <!-- <input (keyup)="handleKeyUp($event)" class="form-control" type="text" id="" placeholder="Search symbols..."  /> -->
+
   <ng-select
+    [items]="symbols"
+    bindLabel="symbol"
+    bindValue="id"
+    (search)="searchSymbol($event)"
+    (change)="selectSymbol($event)"
+    [loading]="selectLoading"
+    [(ngModel)]='chosenSymbol'
+  >
+    <ng-template ng-option-tmp let-item="item">
+      {{item.symbol}} <small>{{item.name}} : {{ item.exchangeName }}</small>
+    </ng-template>
+  </ng-select>
+
+  <!-- <ng-select
     [items]="symbols$ | async"
     bindLabel="symbol"
     bindValue="id"
@@ -12,5 +27,5 @@
     <ng-template ng-option-tmp let-item="item">
       {{item.symbol}} <small>{{item.name}}</small>
     </ng-template>
-  </ng-select>
+  </ng-select> -->
 </div>

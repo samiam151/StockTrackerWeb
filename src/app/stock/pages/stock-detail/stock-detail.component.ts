@@ -30,7 +30,6 @@ export class StockDetailComponent implements OnInit, OnDestroy {
 
       this.stock.getStockDetail(this.symbol).subscribe(data => {
         this.detail = data;
-        console.log(data);
         if (data === null) this.noDataAvailable = true;
       })
     })

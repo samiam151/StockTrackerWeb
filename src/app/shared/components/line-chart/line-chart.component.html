@@ -1,0 +1,14 @@
+<figure id="graph">
+  <apx-chart
+    *ngIf='!isLoading'
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [stroke]="chartOptions.stroke"
+    [dataLabels]="chartOptions.dataLabels"
+    [yaxis]="chartOptions.yaxis"
+    [labels]="chartOptions.labels"
+    [legend]="chartOptions.legend"
+    [title]="chartOptions.title"
+  ></apx-chart>
+</figure>

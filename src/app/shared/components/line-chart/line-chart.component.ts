@@ -1,45 +1,42 @@
-import { formatDate } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import * as d3 from 'd3';
-import { ApexAxisChartSeries, ApexChart, ApexTitleSubtitle, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
+import { ApexChart } from 'ng-apexcharts';
 import { tap } from 'rxjs/operators';
 import { StockService } from '../../services/stock-service/stock.service';
-import { ChartOptions } from "./candle-chart.model"
+import { ChartOptions } from '../candle-chart/candle-chart.model';
 
 @Component({
-  selector: 'app-candle-chart',
-  templateUrl: './candle-chart.component.html',
-  styleUrls: ['./candle-chart.component.scss'],
-  providers: [NgApexchartsModule, StockService]
+  selector: 'app-line-chart',
+  templateUrl: './line-chart.component.html',
+  styleUrls: ['./line-chart.component.scss']
 })
-export class CandleChartComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() symbol: string = "TSLA";
-  @Input() interval: number = 300000
+export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() symbol: string;
+  @Input() interval: number = 300000;
+  @Input() title: string = "";
 
   public chartOptions: Partial<ChartOptions> = {};
   public isLoading: boolean = true;
   public data: any;
   clockInterval: NodeJS.Timeout;
 
-  ngOnInit(): void {
-    this.clockInterval = setInterval(this.reInit.bind(this), this.interval)
-  }
+  constructor(private stock: StockService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.reInit()
+    this.reInit();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.clockInterval);
   }
 
-  constructor(private stock: StockService) { }
+  ngOnInit(): void {
+    this.clockInterval = setInterval(this.reInit.bind(this), this.interval)
+  }
 
   public reInit() {
     this.stock.getIEXChartData(this.symbol).pipe(
         tap(() => this.isLoading = true),
         tap((data) => {
-          console.log(data);
           this.data = data.data;
           this.init(this.data);
         }),
@@ -53,10 +50,14 @@ export class CandleChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setChartDisplayOptions(options: any): Partial<ChartOptions> {
-    options.chart = {
-      type: "candlestick",
-      height: 300
-    }
+    var chart: ApexChart = {
+      type: "area",
+      height: 350,
+      animations: {
+        enabled: false
+      }
+    };
+    options.chart = chart;
 
     options.title = {
       text: this.symbol.toUpperCase(),
@@ -65,17 +66,22 @@ export class CandleChartComponent implements OnInit, OnChanges, OnDestroy {
 
     options.xaxis = {
       type: "datetime",
-      tooltip: {
-        enabled: true,
-        formatter: (value) => {
-          let date = new Date(value);
-          return date.toString();
-          // return "test"
-        }
+      formatter: (value) => {
+        return value;
       }
     };
 
+    options.dataLabels = {
+      enabled: false
+    }
+
+    options.stroke = {
+      curve: "straight",
+      width: 1
+    };
+
     options.yaxis = {
+      opposite: true,
       labels: {
         formatter: function (value) {
           return value;
@@ -86,22 +92,31 @@ export class CandleChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setChartData(options: Partial<ChartOptions>): Partial<ChartOptions> {
-    let data = this.data.map(d => {
+    let data = this.data.filter((d, i) => i % 2 === 0);
+
+    options.series = [{
+      name: "Average Price",
+      data: data.map((d, i) => {
+        if (d.open === null || d.close === null){
+          d = data[i - 1];
+        }
+        if (d.open === null || d.close === null){
+          d = data[i - 2];
+        }
+
+        let p = (d.open + d.close) / 2;
+        return p.toFixed(2);
+      })
+    }];
+
+    options.labels = data.map(d => {
       let date: Date = new Date(d.date);
       let time = d.minute.split(":");
       date.setHours(time[0]);
       date.setMinutes(time[1]);
-      return {
-        // x: new Date(d.date),
-        x: date,
-        y: [d.open, d.high, d.low, d.close]
-      }
-    })
 
-    options.series = [{
-      name: "candle",
-      data: data
-    }];
+      return date.toLocaleString();
+    })
     return options;
   }
 }

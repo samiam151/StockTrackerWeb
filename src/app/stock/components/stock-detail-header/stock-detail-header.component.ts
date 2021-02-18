@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, interval, Observable, of, pipe, Subject, Subscription } from 'rxjs';
 import { exhaustMap, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { StockService } from '../../../shared/services/stock-service/stock.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-stock-detail-header',
@@ -23,7 +24,7 @@ export class StockDetailHeaderComponent implements OnInit, OnDestroy {
   latestData: any = null;
   repeater: Subscription;
 
-  constructor(private stock: StockService) {
+  constructor(private stock: StockService, public user: UserService) {
   }
   ngOnDestroy(): void {
     this.repeater.unsubscribe();
@@ -44,4 +45,7 @@ export class StockDetailHeaderComponent implements OnInit, OnDestroy {
     }, 3000)
   }
 
+  addToWishlist() {
+    // this.stock.addToWishlist(this.symbol)
+  }
 }

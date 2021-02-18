@@ -45,8 +45,6 @@ export class StockTableComponent implements OnInit, OnChanges, OnDestroy {
             style: stock.change > 0 ? "table-success" : "table-danger"
           }
         });
-
-        console.log(this.data);
       })
     }, this.interval);
   }

@@ -59,4 +59,12 @@ export class StockService {
     return this.iex.request<any>(`stock/market/batch?symbols=${stringSymbols}&types=quote&range=1m`);
   }
 
+  getIEXChartData(symbol: string) {
+    return this.iex.request<any>(`stock/${symbol}/chart/dynamic`);
+  }
+
+  addToWishlist(symbol: string) {
+    // return this.http.post<any>("")
+  }
+
 }
