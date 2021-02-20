@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './shared/components';
 
-import { HomeRoutingModule } from './home/home-routing.module';
+import { HomeRoutingModule } from './modules/home/home-routing.module';
 
-import { LoginComponent } from './login/login/login.component';
-import { SignupComponent } from './login/signup/signup.component';
-import { HomeComponent } from './home/home.component';
-import { StockDetailComponent } from './stock/pages/stock-detail/stock-detail.component';
+import { LoginComponent } from './modules/login/login/login.component';
+import { SignupComponent } from './modules/login/signup/signup.component';
+import { HomeComponent } from './modules/home/home.component';
+import { StockDetailComponent } from './modules/stock/pages/stock-detail/stock-detail.component';
 
 const routes: Routes = [
   {

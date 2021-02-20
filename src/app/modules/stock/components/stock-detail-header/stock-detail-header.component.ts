@@ -3,8 +3,8 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, interval, Observable, of, pipe, Subject, Subscription } from 'rxjs';
 import { exhaustMap, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { StockService } from '../../../shared/services/stock-service/stock.service';
-import { UserService } from '../../../shared/services/user.service';
+import { StockService } from '../../../../shared/services/stock-service/stock.service';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-stock-detail-header',

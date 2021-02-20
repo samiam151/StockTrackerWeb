@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from "../shared/shared.module";
+import { SharedModule } from "../../shared/shared.module";
 
 
 @NgModule({

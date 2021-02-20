@@ -39,8 +39,7 @@ export class CandleChartComponent implements OnInit, OnChanges, OnDestroy {
     this.stock.getIEXChartData(this.symbol).pipe(
         tap(() => this.isLoading = true),
         tap((data) => {
-          console.log(data);
-          this.data = data.data;
+          this.data = data;
           this.init(this.data);
         }),
         tap(() => this.isLoading = false),
@@ -88,9 +87,12 @@ export class CandleChartComponent implements OnInit, OnChanges, OnDestroy {
   public setChartData(options: Partial<ChartOptions>): Partial<ChartOptions> {
     let data = this.data.map(d => {
       let date: Date = new Date(d.date);
-      let time = d.minute.split(":");
-      date.setHours(time[0]);
-      date.setMinutes(time[1]);
+
+      if (d.minute) {
+        let time = d.minute.split(":");
+        date.setHours(time[0]);
+        date.setMinutes(time[1]);
+      }
       return {
         // x: new Date(d.date),
         x: date,

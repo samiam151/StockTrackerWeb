@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { StockModule } from "./stock/stock.module";
+import { StockModule } from "./modules/stock/stock.module";
 import { UserInitializer } from "./core/initializers/userInit";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,8 +13,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HomeModule } from './home/home.module';
-import { LoginModule } from './login/login.module';
+import { HomeModule } from './modules/home/home.module';
+import { LoginModule } from './modules/login/login.module';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +25,7 @@ import { UserService } from "./shared/services/user.service";
 import { JwtInterceptor } from "../app/core/interceptors/jwtInterceptor";
 import { HeaderComponent } from './layout/header/header.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -36,6 +37,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   imports: [
     BrowserModule,
     FormsModule,
+    FontAwesomeModule,
     HttpClientModule,
     CoreModule,
     SharedModule,
@@ -52,7 +54,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     }),
     BrowserAnimationsModule,
     NgApexchartsModule,
-    NgSelectModule
+    NgSelectModule,
+    FontAwesomeModule
   ],
   providers: [
     UserService,

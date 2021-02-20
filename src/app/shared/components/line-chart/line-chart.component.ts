@@ -37,7 +37,7 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     this.stock.getIEXChartData(this.symbol).pipe(
         tap(() => this.isLoading = true),
         tap((data) => {
-          this.data = data.data;
+          this.data = data;
           this.init(this.data);
         }),
         tap(() => this.isLoading = false),
@@ -60,14 +60,17 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     options.chart = chart;
 
     options.title = {
-      text: this.symbol.toUpperCase(),
+      text: this.title.toUpperCase(),
       align: "left"
     }
 
     options.xaxis = {
       type: "datetime",
-      formatter: (value) => {
-        return value;
+      labels: {
+        formatter: (value) => {
+          let date = new Date(value);
+          return date.toLocaleTimeString()
+        }
       }
     };
 
@@ -92,28 +95,32 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public setChartData(options: Partial<ChartOptions>): Partial<ChartOptions> {
-    let data = this.data.filter((d, i) => i % 2 === 0);
+    let lastNotNullPrice = null;
+    let books = this.data.filter((d, i) => i % 2 === 0);
 
     options.series = [{
       name: "Average Price",
-      data: data.map((d, i) => {
-        if (d.open === null || d.close === null){
-          d = data[i - 1];
+      data: books.map((book, i) => {
+        if (book.open === null || book.close === null){
+          book = lastNotNullPrice;
         }
-        if (d.open === null || d.close === null){
-          d = data[i - 2];
+        else {
+          lastNotNullPrice = book;
         }
 
-        let p = (d.open + d.close) / 2;
-        return p.toFixed(2);
+        let averagePrice = (book.open + book.close) / 2;
+        return averagePrice.toFixed(2);
       })
     }];
 
-    options.labels = data.map(d => {
+    options.labels = books.map(d => {
       let date: Date = new Date(d.date);
-      let time = d.minute.split(":");
-      date.setHours(time[0]);
-      date.setMinutes(time[1]);
+
+      if (d.minute) {
+        let time = d.minute.split(":");
+        date.setHours(time[0]);
+        date.setMinutes(time[1]);
+      }
 
       return date.toLocaleString();
     })

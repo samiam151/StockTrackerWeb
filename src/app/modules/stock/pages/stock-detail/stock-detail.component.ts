@@ -1,8 +1,8 @@
 import { viewClassName } from '@angular/compiler';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ServerSentEventService } from '../../../shared/services/server-sent-event.service';
-import { StockService } from '../../../shared/services/stock-service/stock.service';
+import { ServerSentEventService } from '../../../../shared/services/server-sent-event.service';
+import { StockService } from '../../../../shared/services/stock-service/stock.service';
 
 @Component({
   selector: 'app-stock-detail',

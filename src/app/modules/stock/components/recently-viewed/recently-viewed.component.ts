@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { StockService } from '../../../shared/services/stock-service/stock.service';
+import { StockService } from '../../../../shared/services/stock-service/stock.service';
 
 @Component({
   selector: 'app-recently-viewed',

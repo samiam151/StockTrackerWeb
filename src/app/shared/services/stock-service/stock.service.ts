@@ -60,7 +60,7 @@ export class StockService {
   }
 
   getIEXChartData(symbol: string) {
-    return this.iex.request<any>(`stock/${symbol}/chart/dynamic`);
+    return this.iex.request<any>(`stock/${symbol}/intraday-prices`);
   }
 
   addToWishlist(symbol: string) {
