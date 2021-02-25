@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { StockService } from '../../services/stock-service/stock.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { StockService } from '../../services/stock-service/stock.service';
 })
 export class StockTableComponent implements OnInit, OnChanges, OnDestroy {
   public clockInterval: NodeJS.Timeout;
+  private subscription: Subscription;
 
   constructor(private stock: StockService) { }
 
@@ -18,6 +20,7 @@ export class StockTableComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.clockInterval);
+    this.subscription.unsubscribe()
   }
 
   @Input() title: string;
@@ -33,7 +36,7 @@ export class StockTableComponent implements OnInit, OnChanges, OnDestroy {
   formatData(symbols: string[]) {
     clearInterval(this.clockInterval);
     this.clockInterval = setInterval(() => {
-      this.stock.getBatchData(symbols).subscribe(data => {
+      this.subscription = this.stock.getBatchData(symbols).subscribe(data => {
         this.data = Object.keys(data).map(symbol => {
           let stock = data[symbol]['quote'];
           return {

@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let stock of data">
-        <th scope="row"><a [href]="stock.link">{{ stock.symbol }}</a></th>
+        <th scope="row"><a [routerLink]="stock.link">{{ stock.symbol }}</a></th>
         <td [class]="stock.style">{{ stock.latestPrice }}</td>
         <td>{{ stock.change }}</td>
         <td>{{ stock.changePercent | percent:'0.2' }}</td>

@@ -5,13 +5,16 @@ import { BehaviorSubject, interval, Observable, of, pipe, Subject, Subscription 
 import { exhaustMap, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { StockService } from '../../../../shared/services/stock-service/stock.service';
 import { UserService } from '../../../../shared/services/user.service';
-
+import { faEye, IconDefinition } from "@fortawesome/free-regular-svg-icons";
 @Component({
   selector: 'app-stock-detail-header',
   templateUrl: './stock-detail-header.component.html',
   styleUrls: ['./stock-detail-header.component.scss']
 })
 export class StockDetailHeaderComponent implements OnInit, OnDestroy {
+  public icons = {
+    eye: faEye
+  }
 
   @Input() data: any;
   @Input() symbol: any;
@@ -23,15 +26,17 @@ export class StockDetailHeaderComponent implements OnInit, OnDestroy {
   priceStyle: string;
   latestData: any = null;
   repeater: Subscription;
+  intervalTimer: NodeJS.Timeout;
 
   constructor(private stock: StockService, public user: UserService) {
   }
   ngOnDestroy(): void {
     this.repeater.unsubscribe();
+    clearInterval(this.intervalTimer);
   }
 
   ngOnInit(): void {
-    setInterval(() => {
+    this.intervalTimer = setInterval(() => {
       this.repeater = this.stock.getCurrentStockPrice(this.symbol).pipe(
         tap(data => {
           this.latestData = data;
@@ -46,6 +51,13 @@ export class StockDetailHeaderComponent implements OnInit, OnDestroy {
   }
 
   addToWishlist() {
-    // this.stock.addToWishlist(this.symbol)
+    this.stock.addToWishlist(this.symbol).subscribe(
+      data => {
+        console.log(data);
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 }

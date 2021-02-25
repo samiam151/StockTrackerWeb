@@ -26,6 +26,7 @@ import { JwtInterceptor } from "../app/core/interceptors/jwtInterceptor";
 import { HeaderComponent } from './layout/header/header.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterModule } from '@angular/router';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     BrowserModule,
     FormsModule,
     FontAwesomeModule,
+    RouterModule,
     HttpClientModule,
     CoreModule,
     SharedModule,

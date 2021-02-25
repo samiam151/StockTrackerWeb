@@ -4,6 +4,7 @@ import { from, interval, Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { ServerSentEventService } from "../server-sent-event.service";
+import { UserService } from '../user.service';
 import { ENV_API, IEX, YAHOO } from "./stock.servce.providers";
 
 export interface IChartResponse {
@@ -20,14 +21,18 @@ export class StockService {
   private iex: IEX;
   private ssAPI: ENV_API;
 
-  constructor(private http: HttpClient, private sse: ServerSentEventService) {
+  constructor(
+    private http: HttpClient,
+    private sse: ServerSentEventService,
+    private user: UserService
+  ) {
     this.yahoo = new YAHOO(http);
     this.iex = new IEX(http);
     this.ssAPI = new ENV_API(http);
   }
 
   getAllSymbols() {
-    return this.ssAPI.request<any[]>();
+    return this.ssAPI.request<any[]>('/stocksymbol');
   }
 
   getChartData(ticker: string)
@@ -36,7 +41,7 @@ export class StockService {
   }
 
   searchSymbols(term: string) {
-    return this.ssAPI.request<any[]>("/search?term=" + term);
+    return this.ssAPI.request<any[]>("/stocksymbol/search?term=" + term);
   }
 
   getStockDetail(symbol: string)
@@ -64,7 +69,10 @@ export class StockService {
   }
 
   addToWishlist(symbol: string) {
-    // return this.http.post<any>("")
+    return this.http.post<any>(environment.apiUrl + "/watchlists/add-watchlist-symbol", {
+      symbol: symbol,
+      userId: this.user.currentUser.id
+    })
   }
 
 }

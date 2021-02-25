@@ -13,7 +13,7 @@ export interface IStockDataProvider {
 export class ENV_API implements IStockDataProvider {
   constructor(private http: HttpClient) { }
 
-  private baseUrl: string = environment.apiUrl + "/stocksymbol";
+  public baseUrl: string = environment.apiUrl;
 
   request<T>(rest?: string): Observable<T> {
     let url = rest ? `${this.baseUrl}${rest}` : `${this.baseUrl}`;
