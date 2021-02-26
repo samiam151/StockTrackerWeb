@@ -13,6 +13,7 @@ import { StockTableComponent } from './components/stock-table/stock-table.compon
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
+import { StockPageBaseComponent } from './components/stock-page-base/stock-page-base.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { RouterModule } from '@angular/router';
     CandleChartComponent,
     SymbolSearchComponent,
     StockTableComponent,
-    LineChartComponent
+    LineChartComponent,
+    StockPageBaseComponent
   ],
   imports: [
     CommonModule,

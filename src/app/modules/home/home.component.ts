@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { StockService } from "../../shared/services/stock-service/stock.service";
-import { environment } from "../../../environments/environment";
+import { StockPageBaseComponent } from '../../shared/components/stock-page-base/stock-page-base.component';
 
 @Component({
   selector: 'app-home',
@@ -11,26 +8,25 @@ import { environment } from "../../../environments/environment";
   styleUrls: ['./home.component.scss'],
   providers: [StockService]
 })
-export class HomeComponent implements OnInit {
-
+export class HomeComponent extends StockPageBaseComponent implements OnInit {
   public symbols: string[] = ['GME', 'BB', 'TSLA', 'AAPL'];
+  public types: string[] = ['chart', 'quote'];
 
-  constructor(
-    private router: Router,
-    private stock: StockService,
-    private http: HttpClient
-  ) { }
+  public query_results = null;
+  data: any;
+  lineChartData: any[];
 
   ngOnInit(): void {
-  }
+    super.ngOnInit();
+    this.query_results$.subscribe(data => {
+      console.log(data);
+      this.data = data;
 
-  showNotification(message = "No Message") {
-    const notification = {
-      title: 'Basic Notification',
-      body: 'Notification from the Main process'
-    }
-    let n = new Notification(message);
-
+      this.lineChartData = Object.keys(data).map(key => ({
+        symbol: key,
+        data: data[key]['chart']
+      }))
+    });
   }
 
 }

@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { environment } from "../../../../environments/environment";
 
 export interface IStockDataProvider {
-  request<T>(rest: string): Observable<T>
+  get<T>(rest: string): Observable<T>
 };
 
 /**
@@ -15,10 +15,16 @@ export class ENV_API implements IStockDataProvider {
 
   public baseUrl: string = environment.apiUrl;
 
-  request<T>(rest?: string): Observable<T> {
+  get<T>(rest?: string): Observable<T> {
     let url = rest ? `${this.baseUrl}${rest}` : `${this.baseUrl}`;
     return this.http.get<T>(url);
   }
+
+  find<T>(rest: string, id: number): Observable<T> {
+    return this.http.get<T>(rest + `?id=${id}`);
+  }
+
+
 }
 
 /**
@@ -38,7 +44,7 @@ export class YAHOO implements IStockDataProvider {
 
   private withURL = (url: string): string => `${this.baseUrl}${url}`;
 
-  public request<T>(rest: string) {
+  public get<T>(rest: string) {
     return this.http.get<T>(this.withURL(rest), {
         "headers": this.apiHeaders
     });
@@ -90,7 +96,7 @@ export class IEX implements IStockDataProvider {
     return this.http.get<T>(`${this.baseUrl}/${this.version}/${rest}${separator}token=${this.secrets.regular.publishable}`);
   }
 
-  public request<T>(rest: string) {
+  public get<T>(rest: string) {
     return this.DEBUG ? this.sandboxRequest<T>(rest) : this.regularRequest<T>(rest);
   }
 }

@@ -32,25 +32,25 @@ export class StockService {
   }
 
   getAllSymbols() {
-    return this.ssAPI.request<any[]>('/stocksymbol');
+    return this.ssAPI.get<any[]>('/stocksymbol');
   }
 
   getChartData(ticker: string)
   {
-    return this.yahoo.request<any>(`/get-chart?interval=5m&symbol=${ticker}&range=1d&region=US`);
+    return this.yahoo.get<any>(`/get-chart?interval=5m&symbol=${ticker}&range=1d&region=US`);
   }
 
   searchSymbols(term: string) {
-    return this.ssAPI.request<any[]>("/stocksymbol/search?term=" + term);
+    return this.ssAPI.get<any[]>("/stocksymbol/search?term=" + term);
   }
 
   getStockDetail(symbol: string)
   {
-    return this.yahoo.request<IChartResponse>(`/get-summary?symbol=${symbol}&region=US`);
+    return this.yahoo.get<IChartResponse>(`/get-summary?symbol=${symbol}&region=US`);
   }
 
   getCurrentStockPrice(symbol: string) {
-    return this.iex.request<any>(`stock/${symbol}/quote`);
+    return this.iex.get<any>(`stock/${symbol}/quote`);
   }
 
   getSSEPrices(symbol: string) {
@@ -61,11 +61,17 @@ export class StockService {
 
   getBatchData(symbols: string[]) {
     let stringSymbols = symbols.join(",");
-    return this.iex.request<any>(`stock/market/batch?symbols=${stringSymbols}&types=quote&range=1m`);
+    return this.iex.get<any>(`stock/market/batch?symbols=${stringSymbols}&types=quote&range=1m`);
+  }
+
+  getPageBatches(symbols: string[], types: string[]){
+    let stringSymbols = symbols.join(",");
+    let stringTypes = types.join(",");
+    return this.iex.get<any>(`stock/market/batch?symbols=${stringSymbols}&types=${stringTypes}&range=1m`);
   }
 
   getIEXChartData(symbol: string) {
-    return this.iex.request<any>(`stock/${symbol}/intraday-prices`);
+    return this.iex.get<any>(`stock/${symbol}/intraday-prices`);
   }
 
   addToWishlist(symbol: string) {

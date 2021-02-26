@@ -13,10 +13,11 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   @Input() symbol: string;
   @Input() interval: number = 300000;
   @Input() title: string = "";
+  @Input() data = null;
 
   public chartOptions: Partial<ChartOptions> = {};
   public isLoading: boolean = true;
-  public data: any;
+
   clockInterval: NodeJS.Timeout;
 
   constructor(private stock: StockService) { }
@@ -34,14 +35,20 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public reInit() {
-    this.stock.getIEXChartData(this.symbol).pipe(
-        tap(() => this.isLoading = true),
-        tap((data) => {
-          this.data = data;
-          this.init(this.data);
-        }),
-        tap(() => this.isLoading = false),
-      ).subscribe();
+    if (this.data) {
+      this.init(this.data);
+      this.isLoading = false
+    }
+    else {
+      this.stock.getIEXChartData(this.symbol).pipe(
+          tap(() => this.isLoading = true),
+          tap((data) => {
+            this.data = data;
+            this.init(this.data);
+          }),
+          tap(() => this.isLoading = false),
+        ).subscribe();
+    }
   }
 
   public init(data) {
