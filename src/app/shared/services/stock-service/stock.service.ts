@@ -65,12 +65,14 @@ export class StockService {
   }
 
   getPageBatches(symbols: string[], types: string[]){
+    // console.log(symbols, types)
     let stringSymbols = symbols.join(",");
     let stringTypes = types.join(",");
     return this.iex.get<any>(`stock/market/batch?symbols=${stringSymbols}&types=${stringTypes}&range=1m`);
   }
 
   getIEXChartData(symbol: string) {
+    console.log(symbol)
     return this.iex.get<any>(`stock/${symbol}/intraday-prices`);
   }
 

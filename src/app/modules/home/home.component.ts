@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { StockService } from "../../shared/services/stock-service/stock.service";
 import { StockPageBaseComponent } from '../../shared/components/stock-page-base/stock-page-base.component';
+import { StockQueryService } from "../../shared/services/stock-query.service";
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { StockPageBaseComponent } from '../../shared/components/stock-page-base/
   styleUrls: ['./home.component.scss'],
   providers: [StockService]
 })
-export class HomeComponent extends StockPageBaseComponent implements OnInit {
+export class HomeComponent implements OnInit {
   public symbols: string[] = ['GME', 'BB', 'TSLA', 'AAPL'];
   public types: string[] = ['chart', 'quote'];
 
@@ -16,16 +17,30 @@ export class HomeComponent extends StockPageBaseComponent implements OnInit {
   data: any;
   lineChartData: any[];
 
+  constructor(private sqs: StockQueryService) {
+  }
+
   ngOnInit(): void {
-    super.ngOnInit();
-    this.query_results$.subscribe(data => {
-      console.log(data);
+    this.sqs.register([
+      {
+        name: "home",
+        symbols: this.symbols,
+        types: ['chart']
+      }
+    ]).subscribe(data => {
       this.data = data;
 
-      this.lineChartData = Object.keys(data).map(key => ({
-        symbol: key,
-        data: data[key]['chart']
-      }))
+      let lineChartData = Object.keys(data).reduce((arr, symbol) => {
+        if (this.symbols.includes(symbol)) {
+          let d = data[symbol]['chart'];
+          arr.push({
+            symbol: symbol,
+            data: d
+          })
+        }
+        return arr;
+      }, [])
+      this.lineChartData = lineChartData;
     });
   }
 

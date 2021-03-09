@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { StockService } from '../../services/stock-service/stock.service';
@@ -8,6 +8,8 @@ import { StockService } from '../../services/stock-service/stock.service';
   template: ``,
 })
 export class StockPageBaseComponent implements OnInit, OnDestroy {
+  protected stock: StockService;
+
   protected symbols: string[] = [];
   protected types: string[] = ['chart', 'quote'];
 
@@ -16,7 +18,9 @@ export class StockPageBaseComponent implements OnInit, OnDestroy {
   interval: NodeJS.Timeout;
   subscription: Subscription;
 
-  constructor(private stock: StockService) { }
+  constructor(injector: Injector) {
+    this.stock = injector.get(StockService);
+  }
 
   ngOnDestroy(): void {
     clearInterval(this.interval);
