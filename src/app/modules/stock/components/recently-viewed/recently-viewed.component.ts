@@ -28,6 +28,8 @@ export class RecentlyViewedComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   setRecentlyViewed(symbol: string = null) {
+    const MAX_NUM = 10;
+
     if (localStorage.getItem("recently_viewed")) {
       this.recentlyViewed = JSON.parse(localStorage.getItem("recently_viewed"))
       this.recentlyViewed.forEach(view => {
@@ -35,6 +37,11 @@ export class RecentlyViewedComponent implements OnInit, OnDestroy, OnChanges {
       });
 
       let current = JSON.parse(localStorage.getItem("recently_viewed"))
+
+      if (current.length > MAX_NUM) {
+        current = current.slice(current.length - MAX_NUM);
+      }
+
       let currentKeys = current.map(view => view['symbol']);
       if (symbol && !currentKeys.includes(symbol))
       {
