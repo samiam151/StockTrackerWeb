@@ -47,7 +47,6 @@ export class SignupComponent implements OnInit {
 
       this.us.createUser(this.signUpFormModel.username, this.signUpFormModel.password)
         .subscribe(data => {
-          console.log(data);
           this.router.navigate(['/login']);
         },
         err => {

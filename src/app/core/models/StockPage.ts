@@ -17,7 +17,5 @@ export abstract class StockPage {
   }
 
   ngOnInit() {
-    console.log('test');
-
   }
 }

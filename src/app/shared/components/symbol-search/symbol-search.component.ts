@@ -38,13 +38,11 @@ export class SymbolSearchComponent implements OnInit {
   searchSymbol({term, items}) {
     // if (term.length > 1) this.searchSub$.next(term.toUpperCase());
     term = term.toUpperCase();
-    console.log("Term: ", term)
     if (term.length > 1) {
       this.symbols = this.initSymbols.filter(sym => {
         return sym.name.toUpperCase().includes(term)
           || sym.symbol.toUpperCase().includes(term);
       })
-      console.log("Filtered Symbols: ", this.symbols)
     }
 
     if (term.lengh === 0) {
@@ -54,7 +52,6 @@ export class SymbolSearchComponent implements OnInit {
 
   selectSymbol({symbol, name})
   {
-    console.log("Selected: ", symbol, name);
     this.router.navigate(["/stock", symbol]).then(() => {
       this.chosenSymbol = null;
     });
